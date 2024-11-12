@@ -6,12 +6,12 @@
 
 Antes de rodar o projeto, você precisará ter as seguintes dependências instaladas:
 
-    Node.js: Ambiente de execução JavaScript.
-    Puppeteer: Biblioteca Node.js para automação de navegação em páginas web via Chromium.
+- **Node.js**: Ambiente de execução JavaScript.
+- **Puppeteer**: Biblioteca Node.js para automação de navegação em páginas web via Chromium.
 
 ## Como Configurar e Utilizar
 
-1. Instale as Dependências
+### 1. Instale as Dependências
 
 Certifique-se de que o Node.js está instalado em seu sistema. Em seguida, instale as dependências do projeto:
 
@@ -19,11 +19,11 @@ Certifique-se de que o Node.js está instalado em seu sistema. Em seguida, insta
 npm install
 ```
 
-2. Configure as Credenciais
+### 2. Configure as Credenciais
 
 Abra o arquivo `config-example.json`, edite com suas informações de login e preferências, e depois renomeie para `config.json`.
 
-2. Executando o Agendador
+### 3. Executando o Agendador
 
 Abra a pasta principal e rode:
 
@@ -31,7 +31,7 @@ Abra a pasta principal e rode:
 node index.js
 ```
 
-## Notas Adicionais
+# Notas Adicionais
 
     Segurança: Não compartilhe o arquivo config.json, pois ele contém suas credenciais.
     Requisitos de Sistema: O Puppeteer requer um sistema com suporte ao Chromium ou uma versão do Google Chrome instalada.
