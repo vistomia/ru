@@ -1,0 +1,24 @@
+{
+    "sigaa":
+        {
+            "user": "SeuNomeDeUsuarioDoSIGGA",
+            "password": "SuaSenhaDoSIGGA"
+        },
+    "agendamento":
+        {
+            "almoco": {
+                "segunda": true,
+                "terca": true,
+                "quarta": true,
+                "quinta": true,
+                "sexta": true
+            },
+            "janta": {
+                "segunda": true,
+                "terca": true,
+                "quarta": true,
+                "quinta": true,
+                "sexta": true
+            }
+        }
+}
