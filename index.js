@@ -251,4 +251,12 @@ for (let i = 0; i < 7; i++) {
 console.log("[ ENCERRADO ]");
 console.log("Confira no sigaa se o agendamento foi realizado.");
 
+try {
+    await page.$('#formulario').screenshot({path: './screenshots/ru.png'});
+    exec('cd screenshots && ru.png');
+} catch (e) {
+    await browser.close();
+    console.error(e)
+}
+
 process.exit(1);
