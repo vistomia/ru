@@ -11,7 +11,13 @@ Antes de rodar o projeto, você precisará ter as seguintes dependências instal
 
 ## Como Configurar e Utilizar
 
-### 1. Instale as Dependências
+### 1. Clone o repositório
+
+```sh
+git clone git@github.com:vistomia/ru.git
+```
+
+### 2. Instale as Dependências
 
 Certifique-se de que o Node.js está instalado em seu sistema. Em seguida, instale as dependências do projeto:
 
@@ -19,11 +25,11 @@ Certifique-se de que o Node.js está instalado em seu sistema. Em seguida, insta
 npm install
 ```
 
-### 2. Configure as Credenciais
+### 3. Configure as Credenciais
 
 Abra o arquivo `config-example.json`, edite com suas informações de login e preferências, e depois renomeie para `config.json`.
 
-### 3. Executando o Agendador
+### 4. Executando o Agendador
 
 Abra a pasta principal e rode:
 
