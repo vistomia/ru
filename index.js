@@ -252,8 +252,8 @@ console.log("[ ENCERRADO ]");
 console.log("Confira no sigaa se o agendamento foi realizado.");
 
 try {
-    await page.$('#formulario').screenshot({path: './screenshots/ru.png'});
-    exec('cd screenshots && ru.png');
+    await page.$('#formulario').screenshot({path: './assets/last-ru.png'});
+    console.log("Uma screenshot foi salva ./assets/last-ru.png");
 } catch (e) {
     await browser.close();
     console.error(e)
