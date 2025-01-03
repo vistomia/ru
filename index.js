@@ -3,6 +3,10 @@ import puppeteer from "puppeteer";
 import { Agendar } from "./src/agendar.js";
 
 // Lendo config.json
+if (fs.existsSync("./config-example.json")) {
+  throw new Error("Configure o arquivo config-example.json e renomeie para config.json");
+}
+
 let config = fs.readFileSync("./config.json");
 config = JSON.parse(config);
 
