@@ -1,11 +1,14 @@
 import fs from "node:fs";
+import fsPromises from "node:fs/promises";
+import os from "node:os";
+import { exec } from "child_process";
 
 let config = fs.readFileSync("./config.json");
 config = JSON.parse(config);
 
 let data = new Date();
-console.log(data.toISOString().split('T')[0]);
-if (config.ultimaExecucao === data.toISOString().split('T')[0]) {
+
+if (config.ultimaExecucao === data.toISOString().split('T')[0] && config.executarSomenteUmaVezAoDia) {
     console.log("Script já foi executado hoje.");
     process.exit();
 }
@@ -18,6 +21,8 @@ const { Agendar } = await import("./src/agendar.js");
 if (fs.existsSync("./config-example.json")) {
     throw new Error("Configure o arquivo config-example.json e renomeie para config.json");
 }
+
+await fsPromises.cp("./assets/erro.png", "./assets/open.png");
 
 // Ligando o Browser
 const browser = await puppeteer.launch({
@@ -278,6 +283,12 @@ console.log("\n[ ENCERRADO ]");
 console.log("Confira no sigaa se o agendamento foi realizado.\n");
 
 await page.screenshot({ path: './assets/last-ru.png' });
+
+if (!ErroNoAgendamento) {
+    await page.screenshot({ path: './assets/open.png' });
+} else {
+    await fsPromises.cp("./assets/erro.png", "./assets/open.png");
+}
 const tableRows = await page.$$('tr');
 
 if (!ErroNoAgendamento) {
@@ -309,4 +320,15 @@ if (!ErroNoAgendamento) {
 } else {
     console.log("\nUma screenshot foi salva ./assets/last-ru.png");
     console.error("Erro ao agendar refeições.");
+}
+
+if (config.popup) {
+    const platform = os.platform();
+    if (platform === "win32") {
+        exec('start "" "./assets/open.png"');
+    } else if (platform === "linux") {
+        exec('xdg-open "./assets/open.png"');
+    } else {
+        console.log("Não foi possível abrir a imagem.");
+    }
 }

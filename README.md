@@ -37,6 +37,16 @@ Abra a pasta principal e rode:
 node index.js
 ```
 
+## 5. (opcional) Agendamento Automático
+
+### Windows
+
+
+
+### Linux
+
+Para agendar a execução do script diariamente, você pode usar o `cron`. Abra o terminal e digite:
+
 # Notas Adicionais
 
     Segurança: Não compartilhe o arquivo config.json, pois ele contém suas credenciais.

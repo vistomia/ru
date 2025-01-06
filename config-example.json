@@ -1,0 +1,25 @@
+{
+    "sigaa": {
+        "user": "seuUsuario",
+        "password": "SuaSenha"
+    },
+    "agendamento": {
+        "almoco": {
+            "segunda": true,
+            "terca": true,
+            "quarta": true,
+            "quinta": true,
+            "sexta": true
+        },
+        "janta": {
+            "segunda": true,
+            "terca": true,
+            "quarta": true,
+            "quinta": true,
+            "sexta": true
+        }
+    },
+    "popup": true,
+    "executavelSomenteUmaVezPorDia": false,
+    "ultimaExecucao": "2025-01-06"
+}
