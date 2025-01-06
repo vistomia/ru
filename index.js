@@ -301,15 +301,12 @@ if (!ErroNoAgendamento) {
     }
 }
 
-
-
 if (!ErroNoAgendamento) {
     console.log("\nUma screenshot foi salva ./assets/last-ru.png");
     config.ultimaExecucao = new Date().toISOString().split('T')[0];
     fs.writeFileSync('./config.json', JSON.stringify(config, null, 4));
+    process.exit();
 } else {
     console.log("\nUma screenshot foi salva ./assets/last-ru.png");
     console.error("Erro ao agendar refeições.");
 }
-
-process.exit();
