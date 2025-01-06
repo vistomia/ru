@@ -41,11 +41,15 @@ node index.js
 
 ### Windows
 
+Use o Agenda de Tarefas do Windows para agendar a execução do script diariamente. Abra o Agenda de Tarefas, clique em "Criar Tarefa Básica" e siga as instruções.
 
+Quando estiver na opção "Iniciar um programa", selecione o arquivo `auto-windows.bat` na pasta do projeto. Em seguida, copie todo o caminho do diretório (exceto o arquivo auto-windows.bat) e cole-o no campo "Iniciar em (opcional)".
+
+![image](./assets/schedule-windows.png)
 
 ### Linux
 
-Para agendar a execução do script diariamente, você pode usar o `cron`. Abra o terminal e digite:
+Ainda não sei como rodar o projeto no Linux mas suponho que precise usar o `cron` ou algo do tipo.
 
 # Notas Adicionais
 
