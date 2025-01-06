@@ -29,15 +29,7 @@ export class Agendar {
       return document.querySelector("ul.erros") !== null;
     });
 
-    if (!errorExists)
-      console.log(
-        `O agendamento do almoço foi realizado com sucesso para o dia ${date[0]}${date[1]}/${date[2]}${date[3]}.`
-      );
-    else {
-      console.log(
-        `Não foi possível agendar o almoço no dia ${date[0]}${date[1]}/${date[2]}${date[3]}.`
-      );
-    }
+    return errorExists;
   }
 
   async janta(date) {
@@ -62,14 +54,6 @@ export class Agendar {
       return document.querySelector("ul.erros") !== null;
     });
 
-    if (!errorExists)
-      console.log(
-        `O agendamento do jantar foi realizado com sucesso para o dia ${date[0]}${date[1]}/${date[2]}${date[3]}.`
-      );
-    else {
-      console.log(
-        `Não foi possível agendar o jantar no dia ${date[0]}${date[1]}/${date[2]}${date[3]}.`
-      );
-    }
+    return errorExists;
   }
 }
