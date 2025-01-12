@@ -3,6 +3,32 @@ import fsPromises from "node:fs/promises";
 import os from "node:os";
 import { exec } from "child_process";
 
+// Create a helper function for printing table rows
+async function handleTableRowsOutput(tableRows, isError) {
+    if (tableRows.length > 0) {
+        for (const row of tableRows) {
+            const rowText = await row.evaluate(el => el.innerText);
+            if (rowText) {
+                isError ? console.error(rowText) : console.log(rowText);
+            }
+        }
+    } else {
+        isError ? console.error("No table rows found.") : console.log("No table rows found.");
+    }
+}
+
+function openPopUp() {
+    const platform = os.platform();
+
+    if (platform === "win32") {
+        exec('start "" "./assets/open.png"');
+    } else if (platform === "linux") {
+        exec('xdg-open "./assets/open.png"');
+    } else {
+        console.log("Não foi possível abrir a imagem.");
+    }
+}
+
 let config = fs.readFileSync("./config.json");
 config = JSON.parse(config);
 
@@ -284,52 +310,26 @@ console.log("Confira no sigaa se o agendamento foi realizado.\n");
 
 await page.screenshot({ path: './assets/last-ru.png' });
 
-if (!ErroNoAgendamento) {
-    await page.screenshot({ path: './assets/open.png' });
-} else {
-    await fsPromises.cp("./assets/erro.png", "./assets/open.png");
-}
 const tableRows = await page.$$('tr');
 
-if (!ErroNoAgendamento) {
-    if (tableRows.length > 0) {
-        for (const row of tableRows) {
-            const rowText = await row.evaluate(el => el.innerText);
-            rowText ? console.log(rowText) : '';
-        }
-    } else {
-        console.log("No table rows found.");
-    }
+if (ErroNoAgendamento) {
+    await fsPromises.cp("./assets/erro.png", "./assets/open.png");
 } else {
-    if (tableRows.length > 0) {
-        for (const row of tableRows) {
-            const rowText = await row.evaluate(el => el.innerText);
-            rowText ? console.error(rowText) : '';
-        }
-    } else {
-        ErroNoAgendamento = true;
-        console.error("No table rows found.");
-    }
+    const element = await page.$("#formulario")
+    await element.screenshot({ path: './assets/open.png' });
 }
 
-if (config.popup) {
-    const platform = os.platform();
+await handleTableRowsOutput(tableRows, ErroNoAgendamento);
 
-    if (platform === "win32") {
-        exec('start "" "./assets/open.png"');
-    } else if (platform === "linux") {
-        exec('xdg-open "./assets/open.png"');
-    } else {
-        console.log("Não foi possível abrir a imagem.");
-    }
-}
-
-if (!ErroNoAgendamento) {
+if (ErroNoAgendamento) {
+    console.log("\nUma screenshot foi salva ./assets/last-ru.png");
+    console.error("Erro ao agendar refeições.");
+} else {
     console.log("\nUma screenshot foi salva ./assets/last-ru.png");
     config.ultimaExecucao = new Date().toISOString().split('T')[0];
     fs.writeFileSync('./config.json', JSON.stringify(config, null, 4));
-    if (!config.popup) process.exit();
-} else {
-    console.log("\nUma screenshot foi salva ./assets/last-ru.png");
-    console.error("Erro ao agendar refeições.");
 }
+
+if (!config.popup) process.exit();
+
+openPopUp();
