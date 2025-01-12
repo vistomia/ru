@@ -3,32 +3,6 @@ import fsPromises from "node:fs/promises";
 import os from "node:os";
 import { exec } from "child_process";
 
-// Create a helper function for printing table rows
-async function handleTableRowsOutput(tableRows, isError) {
-    if (tableRows.length > 0) {
-        for (const row of tableRows) {
-            const rowText = await row.evaluate(el => el.innerText);
-            if (rowText) {
-                isError ? console.error(rowText) : console.log(rowText);
-            }
-        }
-    } else {
-        isError ? console.error("No table rows found.") : console.log("No table rows found.");
-    }
-}
-
-function openPopUp() {
-    const platform = os.platform();
-
-    if (platform === "win32") {
-        exec('start "" "./assets/open.png"');
-    } else if (platform === "linux") {
-        exec('xdg-open "./assets/open.png"');
-    } else {
-        console.log("Não foi possível abrir a imagem.");
-    }
-}
-
 let config = fs.readFileSync("./config.json");
 config = JSON.parse(config);
 
@@ -43,12 +17,42 @@ if (config.ultimaExecucao === data.toISOString().split('T')[0] && config.executa
 const puppeteer = await import("puppeteer");
 const { Agendar } = await import("./src/agendar.js");
 
+// Create a helper function for printing table rows
+async function handleTableRowsOutput(tableRows, isError) {
+    if (tableRows.length > 0) {
+        for (const row of tableRows) {
+            const rowText = await row.evaluate(el => el.innerText);
+            if (rowText) {
+                isError ? console.error(rowText) : console.log(rowText);
+            }
+        }
+    } else {
+        isError ? console.error("No table rows found.") : console.log("No table rows found.");
+    }
+}
+
+async function setPopUpToError() {
+    await fsPromises.cp("./assets/erro.png", "./assets/open.png");
+}
+
+function openPopUp() {
+    const platform = os.platform();
+
+    if (platform === "win32") {
+        exec('start "" "./assets/open.png"');
+    } else if (platform === "linux") {
+        exec('xdg-open "./assets/open.png"');
+    } else {
+        console.log("Não foi possível abrir a imagem.");
+    }
+}
+
 // Lendo config.json
 if (fs.existsSync("./config-example.json")) {
     throw new Error("Configure o arquivo config-example.json e renomeie para config.json");
 }
 
-await fsPromises.cp("./assets/erro.png", "./assets/open.png");
+await setPopUpToError();
 
 // Ligando o Browser
 const browser = await puppeteer.launch({
@@ -107,20 +111,6 @@ if (page.url() === "https://si3.ufc.br/sigaa/logar.do?dispatch=logOn") {
 
 console.log("Logou no SIGAA");
 
-if (page.url() === "https://si3.ufc.br/sigaa/telaAvisoLogon.jsf") {
-    let btnConfirmar = "input[type=submit]";
-    while (page.url() === "https://si3.ufc.br/sigaa/telaAvisoLogon.jsf") {
-        console.log("Tela de Aviso do SIGAA");
-        try {
-            await page.keyboard.press("PageDown");
-            await page.locator(btnConfirmar).click();
-            await page.waitForNavigation();
-        } catch (e) {
-            console.error("Erro na tela de aviso do SIGAA");
-        }
-    }
-}
-
 if (page.url() === "https://si3.ufc.br/sigaa/progresso.jsf") {
     await page.waitForNavigation();
 }
@@ -132,8 +122,7 @@ if (page.url() !== "https://si3.ufc.br/sigaa/paginaInicial.do") {
 }
 
 // Entrar na pagina do discente
-await page.locator("#portais > ul > li.discente.on > a").click();
-await page.waitForNavigation();
+await page.goto("https://si3.ufc.br/sigaa/verPortalDiscente.do");
 console.log("Entrou na Pagina do Discente");
 
 // Procurar botão do RU as vezes eles mudam de lugar
@@ -313,8 +302,9 @@ await page.screenshot({ path: './assets/last-ru.png' });
 const tableRows = await page.$$('tr');
 
 if (ErroNoAgendamento) {
-    await fsPromises.cp("./assets/erro.png", "./assets/open.png");
+    setPopUpToError();
 } else {
+    //setPopUpToScreenshotOfPageFormulario
     const element = await page.$("#formulario")
     await element.screenshot({ path: './assets/open.png' });
 }
