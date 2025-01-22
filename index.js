@@ -111,14 +111,22 @@ if (page.url() === "https://si3.ufc.br/sigaa/logar.do?dispatch=logOn") {
 
 console.log("Logou no SIGAA");
 
+if (page.url() === "https://si3.ufc.br/sigaa/telaAvisoLogon.jsf") {
+    let btnConfirmar = "input[type=submit]";
+    while (page.url() === "https://si3.ufc.br/sigaa/telaAvisoLogon.jsf") {
+      console.log("Tela de Aviso do SIGAA");
+      try {
+        await page.keyboard.press("PageDown");
+        await page.locator(btnConfirmar).click();
+        await page.waitForNavigation();
+      } catch (e) {
+        console.error("Erro na tela de aviso do SIGAA");
+      }
+    }
+  }
+
 if (page.url() === "https://si3.ufc.br/sigaa/progresso.jsf") {
     await page.waitForNavigation();
-}
-
-if (page.url() !== "https://si3.ufc.br/sigaa/paginaInicial.do") {
-    throw new Error(
-        `Erro "${page.url()}" esperado "https://si3.ufc.br/sigaa/paginaInicial.do"`
-    );
 }
 
 // Entrar na pagina do discente
