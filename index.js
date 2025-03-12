@@ -111,22 +111,12 @@ if (page.url() === "https://si3.ufc.br/sigaa/logar.do?dispatch=logOn") {
 
 console.log("Logou no SIGAA");
 
-if (page.url() === "https://si3.ufc.br/sigaa/telaAvisoLogon.jsf") {
-    let btnConfirmar = "input[type=submit]";
-    while (page.url() === "https://si3.ufc.br/sigaa/telaAvisoLogon.jsf") {
-      console.log("Tela de Aviso do SIGAA");
-      try {
-        await page.keyboard.press("PageDown");
-        await page.locator(btnConfirmar).click();
-        await page.waitForNavigation();
-      } catch (e) {
-        console.error("Erro na tela de aviso do SIGAA");
-      }
-    }
-  }
-
 if (page.url() === "https://si3.ufc.br/sigaa/progresso.jsf") {
     await page.waitForNavigation();
+}
+
+if (page.url() !== "https://si3.ufc.br/sigaa/paginaInicial.do") {
+    page.goto("https://si3.ufc.br/sigaa/paginaInicial.do");
 }
 
 // Entrar na pagina do discente
@@ -269,7 +259,20 @@ function proximaJanta() {
 const agendar = new Agendar(page);
 let ErroNoAgendamento = false;
 
-function log(date, errorExists) {
+
+function logA(date, errorExists) {
+    if (!errorExists)
+        console.log(
+            `O agendamento do almoço foi realizado com sucesso para o dia ${date[0]}${date[1]}/${date[2]}${date[3]}.`
+        );
+    else {
+        console.log(
+            `Não foi possível agendar o almoço no dia ${date[0]}${date[1]}/${date[2]}${date[3]}.`
+        );
+    }
+}
+
+function logB(date, errorExists) {
     if (!errorExists)
         console.log(
             `O agendamento do jantar foi realizado com sucesso para o dia ${date[0]}${date[1]}/${date[2]}${date[3]}.`
@@ -289,7 +292,7 @@ for (let i = 0; i < 7; i++) {
 
     ErroNoAgendamento = await agendar.almoco(dataAgendarAlmoco);
 
-    log(dataAgendarAlmoco, ErroNoAgendamento);
+    logA(dataAgendarAlmoco, ErroNoAgendamento);
 }
 
 for (let i = 0; i < 7; i++) {
@@ -299,7 +302,7 @@ for (let i = 0; i < 7; i++) {
 
     ErroNoAgendamento = await agendar.janta(dataAgendarJanta);
 
-    log(dataAgendarJanta, ErroNoAgendamento);
+    logB(dataAgendarJanta, ErroNoAgendamento);
 }
 
 console.log("\n[ ENCERRADO ]");
